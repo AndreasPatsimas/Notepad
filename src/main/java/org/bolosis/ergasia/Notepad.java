@@ -37,7 +37,7 @@ public class Notepad implements ActionListener, MenuConstants {
 
 	private String fileName = "Untitled";
 	private boolean saved = true;
-	String applicationName = "Javapad";
+	String applicationName = "Tasos";
 
 	String searchString, replaceString;
 	int lastSearchIndex;
@@ -120,7 +120,7 @@ public class Notepad implements ActionListener, MenuConstants {
 		 */
 	}
 
-	////////////////////////////////////
+	
 	void goTo() {
 		int lineNumber = 0;
 		try {

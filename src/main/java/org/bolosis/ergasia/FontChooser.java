@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 
-public class FontChooser extends JPanel // implements ActionListener
+public class FontChooser extends JPanel 
 {
 	private Font thisFont;
 
@@ -23,7 +23,7 @@ public class FontChooser extends JPanel // implements ActionListener
 	public FontChooser(Font withFont) {
 		thisFont = withFont;
 
-////////////////////
+
 		String[] fontNames = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
 		jFace = new JList(fontNames);
 		jFace.setSelectedIndex(0);
@@ -146,7 +146,7 @@ public class FontChooser extends JPanel // implements ActionListener
 
 	}
 
-//////////////////////////////////
+
 	public boolean showDialog(Component parent, String title) {
 		ok = false;
 
@@ -164,8 +164,8 @@ public class FontChooser extends JPanel // implements ActionListener
 
 		dialog.setTitle(title);
 		dialog.setVisible(true);
-//System.out.println(dialog.getWidth()+" "+dialog.getHeight());
+
 		return ok;
 	}
-//////////////////////////////
+
 }

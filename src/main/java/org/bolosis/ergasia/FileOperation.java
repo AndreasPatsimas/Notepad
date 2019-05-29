@@ -7,19 +7,19 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-/************************************/
+
 public class FileOperation {
 	Notepad npd;
 
 	boolean saved;
 	boolean newFileFlag;
 	String fileName;
-	String applicationTitle = "Notepad - JavaTpoint";
+	String applicationTitle = "Notepad - Tasos Bolosis";
 
 	File fileRef;
 	JFileChooser chooser;
 
-/////////////////////////////  
+ 
 	boolean isSave() {
 		return saved;
 	}
@@ -36,7 +36,7 @@ public class FileOperation {
 		this.fileName = new String(fileName);
 	}
 
-/////////////////////////  
+
 	FileOperation(Notepad npd) {
 		this.npd = npd;
 
@@ -52,7 +52,7 @@ public class FileOperation {
 		chooser.setCurrentDirectory(new File("."));
 
 	}
-//////////////////////////////////////  
+  
 
 	boolean saveFile(File temp) {
 		FileWriter fout = null;
@@ -72,7 +72,7 @@ public class FileOperation {
 		return true;
 	}
 
-////////////////////////  
+ 
 	boolean saveThisFile() {
 
 		if (!newFileFlag) {
@@ -82,7 +82,7 @@ public class FileOperation {
 		return saveAsFile();
 	}
 
-////////////////////////////////////  
+  
 	boolean saveAsFile() {
 		File temp = null;
 		chooser.setDialogTitle("Save As...");
@@ -105,7 +105,7 @@ public class FileOperation {
 		return saveFile(temp);
 	}
 
-////////////////////////  
+ 
 	boolean openFile(File temp) {
 		FileInputStream fin = null;
 		BufferedReader din = null;
@@ -136,7 +136,7 @@ public class FileOperation {
 		return true;
 	}
 
-///////////////////////  
+ 
 	void openFile() {
 		if (!confirmSave())
 			return;
@@ -173,7 +173,7 @@ public class FileOperation {
 
 	}
 
-////////////////////////  
+ 
 	void updateStatus(File temp, boolean saved) {
 		if (saved) {
 			this.saved = true;
@@ -191,7 +191,7 @@ public class FileOperation {
 		}
 	}
 
-///////////////////////  
+ 
 	boolean confirmSave() {
 		String strMsg = "<html>The text in the " + fileName + " file has been changed.<br>"
 				+ "Do you want to save the changes?<html>";
@@ -207,7 +207,7 @@ public class FileOperation {
 		return true;
 	}
 
-///////////////////////////////////////  
+  
 	void newFile() {
 		if (!confirmSave())
 			return;
@@ -219,5 +219,5 @@ public class FileOperation {
 		newFileFlag = true;
 		this.npd.f.setTitle(fileName + " - " + applicationTitle);
 	}
-//////////////////////////////////////  
+  
 }
