@@ -7,7 +7,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 import java.util.Date;
+import java.util.Scanner;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JColorChooser;
@@ -27,6 +29,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+
+import org.apache.commons.lang3.StringUtils;
 
 
 public class Notepad implements ActionListener, MenuConstants {
@@ -222,7 +226,45 @@ public class Notepad implements ActionListener, MenuConstants {
 		}
 		
 		else if (cmdText.equals(aboutStatistics)) {
-			JOptionPane.showMessageDialog(Notepad.this.f, invastigationText, "Results...", JOptionPane.INFORMATION_MESSAGE);
+			String fileName = f.getTitle();
+			String title = " - Notepad - Tasos Bolosis";
+			fileName = fileName.replace(title, " ").replaceAll("\\s+", " ");
+			
+			try {
+				
+				File file =new File(fileName);
+				
+				Scanner sc = new Scanner(file);
+				Scanner cs = new Scanner(file);
+				
+				long lines = 0l;
+				
+				long charactersWithGaps = 0l;
+				
+				long charactersWithoutGaps = 0l;
+				
+				while(sc.hasNextLine()) {
+					lines = lines + 1;
+					
+					charactersWithGaps = charactersWithGaps + sc.nextLine().length();
+					
+					
+				}
+				
+				while(cs.hasNextLine()) {
+					charactersWithoutGaps = charactersWithoutGaps + StringUtils.deleteWhitespace(cs.nextLine()).length();
+				}
+				
+				double bytes = (double) file.length()/1024;
+				
+				long words = (long) FileOperation.getNumberOfWords(fileName);
+				
+				JOptionPane.showMessageDialog(Notepad.this.f, FileOperation.invastigationText(words, charactersWithGaps, 
+						charactersWithoutGaps, lines, bytes), "Results...", JOptionPane.INFORMATION_MESSAGE);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 		} else
 			statusBar.setText("This " + cmdText + " command is yet to be implemented");
 	}// action Performed
@@ -370,12 +412,10 @@ public class Notepad implements ActionListener, MenuConstants {
 			}
 
 			public void menuDeselected(MenuEvent e) {
-				// TODO Auto-generated method stub
 				
 			}
 
 			public void menuCanceled(MenuEvent e) {
-				// TODO Auto-generated method stub
 				
 			}
 

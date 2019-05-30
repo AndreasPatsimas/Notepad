@@ -1,12 +1,10 @@
 package org.bolosis.ergasia;
 
 import java.io.*;
-import java.util.Date;
-import java.awt.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.*;
-
 
 public class FileOperation {
 	Notepad npd;
@@ -218,6 +216,40 @@ public class FileOperation {
 		saved = true;
 		newFileFlag = true;
 		this.npd.f.setTitle(fileName + " - " + applicationTitle);
+	}
+	
+	static long getNumberOfWords(String filePath) throws FileNotFoundException {
+		File file =new File(filePath);
+		Scanner sc = new Scanner(file);
+		ArrayList<String []> lines = new ArrayList<String []>();
+		ArrayList<String> words = new ArrayList<String>();
+		
+		while(sc.hasNextLine()) {
+			
+			lines.add(sc.nextLine().split(" "));
+		}
+		
+		for(String [] wordArray : lines) {
+			
+			for(int i = 0; i < wordArray.length; i++) {
+				if(!wordArray[i].equals("")) {
+					words.add(wordArray[i]);
+				}
+			}
+
+		}
+		return words.size();
+	}
+	
+	static String invastigationText(long words, long charactersWithGaps, long charactersWithoutGaps, long lines, double bytes) {
+ 
+		 String invastigationText="Number of words : "+ words + "\n"
+			 		+ "Number of characters(gaps including): "+ charactersWithGaps + " \n"
+			 		+ "Number of characters: "+ charactersWithoutGaps + " \n"
+			 		+ "Number of lines: "+ lines + " \n"
+			 		+ "Size of file: "+ bytes + " KB \n";
+  
+        return invastigationText; 
 	}
   
 }

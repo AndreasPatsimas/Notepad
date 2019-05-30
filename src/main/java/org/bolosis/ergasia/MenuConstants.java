@@ -33,8 +33,4 @@ public interface MenuConstants {
 	    
 	final String aboutStatistics="About Statistics";  
 	  
-	 String invastigationText="Number of words :  \n"
-	 		+ "Number of characters:  \n"
-	 		+ "Number of paragraphs:  \n"
-	 		+ "Size of file:  \n";
 }

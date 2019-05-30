@@ -1,6 +1,5 @@
 package org.bolosis.ergasia;
 
-import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
