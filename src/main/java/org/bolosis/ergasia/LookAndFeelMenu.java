@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-/***************************************************/
+
 
 public class LookAndFeelMenu {
 
@@ -30,25 +30,24 @@ public class LookAndFeelMenu {
 
 }
 
-/**************************/
 class LookAndFeelMenuListener implements ActionListener {
 	String classname;
 	Component jf;
 
-/////////////////////
+
 	LookAndFeelMenuListener(String cln, Component jf) {
 		this.jf = jf;
 		classname = new String(cln);
 	}
 
-/////////////////////
+
 	public void actionPerformed(ActionEvent ev) {
 		try {
 			UIManager.setLookAndFeel(classname);
 			SwingUtilities.updateComponentTreeUI(jf);
 		} catch (Exception e) {
-			System.out.println(e);
+			e.printStackTrace();
 		}
 	}
-///////////////////////////////
+
 }
