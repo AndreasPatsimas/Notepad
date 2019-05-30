@@ -33,7 +33,7 @@ import javax.swing.event.MenuListener;
 import org.apache.commons.lang3.StringUtils;
 
 
-public class Notepad implements ActionListener, MenuConstants {
+public class TextEditor implements ActionListener, MenuConstants {
 
 	JFrame f;
 	JTextArea ta;
@@ -56,7 +56,7 @@ public class Notepad implements ActionListener, MenuConstants {
 	JMenuItem cutItem, copyItem, clearItem, findItem, findNextItem, replaceItem, gotoItem, selectAllItem;
 
 	
-	Notepad() {
+	TextEditor() {
 		f = new JFrame(fileName + " - " + applicationName);
 		ta = new JTextArea(30, 60);
 		statusBar = new JLabel("||       Ln 1, Col 1  ", JLabel.RIGHT);
@@ -166,15 +166,15 @@ public class Notepad implements ActionListener, MenuConstants {
 			ta.replaceSelection("");
 		
 		else if (cmdText.equals(editFind)) {
-			if (Notepad.this.ta.getText().length() == 0)
+			if (TextEditor.this.ta.getText().length() == 0)
 				return; // text box have no text
 			if (findReplaceDialog == null)
-				findReplaceDialog = new FindDialog(Notepad.this.ta);
-			findReplaceDialog.showDialog(Notepad.this.f, true);
+				findReplaceDialog = new FindDialog(TextEditor.this.ta);
+			findReplaceDialog.showDialog(TextEditor.this.f, true);
 		}
 		
 		else if (cmdText.equals(editFindNext)) {
-			if (Notepad.this.ta.getText().length() == 0)
+			if (TextEditor.this.ta.getText().length() == 0)
 				return; // text box have no text
 
 			if (findReplaceDialog == null)
@@ -184,16 +184,16 @@ public class Notepad implements ActionListener, MenuConstants {
 		}
 		
 		else if (cmdText.equals(editReplace)) {
-			if (Notepad.this.ta.getText().length() == 0)
+			if (TextEditor.this.ta.getText().length() == 0)
 				return; // text box have no text
 
 			if (findReplaceDialog == null)
-				findReplaceDialog = new FindDialog(Notepad.this.ta);
-			findReplaceDialog.showDialog(Notepad.this.f, false);// replace
+				findReplaceDialog = new FindDialog(TextEditor.this.ta);
+			findReplaceDialog.showDialog(TextEditor.this.f, false);// replace
 		}
 		
 		else if (cmdText.equals(editGoTo)) {
-			if (Notepad.this.ta.getText().length() == 0)
+			if (TextEditor.this.ta.getText().length() == 0)
 				return; // text box have no text
 			goTo();
 		}
@@ -209,8 +209,8 @@ public class Notepad implements ActionListener, MenuConstants {
 			if (fontDialog == null)
 				fontDialog = new FontChooser(ta.getFont());
 
-			if (fontDialog.showDialog(Notepad.this.f, "Choose a font"))
-				Notepad.this.ta.setFont(fontDialog.createFont());
+			if (fontDialog.showDialog(TextEditor.this.f, "Choose a font"))
+				TextEditor.this.ta.setFont(fontDialog.createFont());
 		}
 		
 		else if (cmdText.equals(formatForeground))
@@ -259,7 +259,7 @@ public class Notepad implements ActionListener, MenuConstants {
 				
 				long words = (long) FileOperation.getNumberOfWords(fileName);
 				
-				JOptionPane.showMessageDialog(Notepad.this.f, FileOperation.invastigationText(words, charactersWithGaps, 
+				JOptionPane.showMessageDialog(TextEditor.this.f, FileOperation.invastigationText(words, charactersWithGaps, 
 						charactersWithoutGaps, lines, bytes), "Results...", JOptionPane.INFORMATION_MESSAGE);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -274,10 +274,10 @@ public class Notepad implements ActionListener, MenuConstants {
 		if (bcolorChooser == null)
 			bcolorChooser = new JColorChooser();
 		if (backgroundDialog == null)
-			backgroundDialog = JColorChooser.createDialog(Notepad.this.f, formatBackground, false, bcolorChooser,
+			backgroundDialog = JColorChooser.createDialog(TextEditor.this.f, formatBackground, false, bcolorChooser,
 					new ActionListener() {
 						public void actionPerformed(ActionEvent evvv) {
-							Notepad.this.ta.setBackground(bcolorChooser.getColor());
+							TextEditor.this.ta.setBackground(bcolorChooser.getColor());
 						}
 					}, null);
 
@@ -289,10 +289,10 @@ public class Notepad implements ActionListener, MenuConstants {
 		if (fcolorChooser == null)
 			fcolorChooser = new JColorChooser();
 		if (foregroundDialog == null)
-			foregroundDialog = JColorChooser.createDialog(Notepad.this.f, formatForeground, false, fcolorChooser,
+			foregroundDialog = JColorChooser.createDialog(TextEditor.this.f, formatForeground, false, fcolorChooser,
 					new ActionListener() {
 						public void actionPerformed(ActionEvent evvv) {
-							Notepad.this.ta.setForeground(fcolorChooser.getColor());
+							TextEditor.this.ta.setForeground(fcolorChooser.getColor());
 						}
 					}, null);
 
@@ -387,7 +387,7 @@ public class Notepad implements ActionListener, MenuConstants {
 
 		MenuListener editMenuListener = new MenuListener() {
 			public void menuSelected(MenuEvent evvvv) {
-				if (Notepad.this.ta.getText().length() == 0) {
+				if (TextEditor.this.ta.getText().length() == 0) {
 					findItem.setEnabled(false);
 					findNextItem.setEnabled(false);
 					replaceItem.setEnabled(false);
@@ -400,7 +400,7 @@ public class Notepad implements ActionListener, MenuConstants {
 					selectAllItem.setEnabled(true);
 					gotoItem.setEnabled(true);
 				}
-				if (Notepad.this.ta.getSelectionStart() == ta.getSelectionEnd()) {
+				if (TextEditor.this.ta.getSelectionStart() == ta.getSelectionEnd()) {
 					cutItem.setEnabled(false);
 					copyItem.setEnabled(false);
 					clearItem.setEnabled(false);

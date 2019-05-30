@@ -7,7 +7,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class FileOperation {
-	Notepad npd;
+	TextEditor txe;
 
 	boolean saved;
 	boolean newFileFlag;
@@ -35,14 +35,14 @@ public class FileOperation {
 	}
 
 
-	FileOperation(Notepad npd) {
-		this.npd = npd;
+	FileOperation(TextEditor txe) {
+		this.txe = txe;
 
 		saved = true;
 		newFileFlag = true;
 		fileName = new String("Untitled");
 		fileRef = new File(fileName);
-		this.npd.f.setTitle(fileName + " - " + applicationTitle);
+		this.txe.f.setTitle(fileName + " - " + applicationTitle);
 
 		chooser = new JFileChooser();
 		chooser.addChoosableFileFilter(new MyFileFilter(".java", "Java Source Files(*.java)"));
@@ -56,7 +56,7 @@ public class FileOperation {
 		FileWriter fout = null;
 		try {
 			fout = new FileWriter(temp);
-			fout.write(npd.ta.getText());
+			fout.write(txe.ta.getText());
 		} catch (IOException ioe) {
 			updateStatus(temp, false);
 			return false;
@@ -89,12 +89,12 @@ public class FileOperation {
 		chooser.setApproveButtonToolTipText("Click me to save!");
 
 		do {
-			if (chooser.showSaveDialog(this.npd.f) != JFileChooser.APPROVE_OPTION)
+			if (chooser.showSaveDialog(this.txe.f) != JFileChooser.APPROVE_OPTION)
 				return false;
 			temp = chooser.getSelectedFile();
 			if (!temp.exists())
 				break;
-			if (JOptionPane.showConfirmDialog(this.npd.f,
+			if (JOptionPane.showConfirmDialog(this.txe.f,
 					"<html>" + temp.getPath() + " already exists.<br>Do you want to replace it?<html>", "Save As",
 					JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
 				break;
@@ -116,7 +116,7 @@ public class FileOperation {
 				str = din.readLine();
 				if (str == null)
 					break;
-				this.npd.ta.append(str + "\n");
+				this.txe.ta.append(str + "\n");
 			}
 
 		} catch (IOException ioe) {
@@ -130,7 +130,7 @@ public class FileOperation {
 			}
 		}
 		updateStatus(temp, true);
-		this.npd.ta.setCaretPosition(0);
+		this.txe.ta.setCaretPosition(0);
 		return true;
 	}
 
@@ -145,26 +145,26 @@ public class FileOperation {
 
 		File temp = null;
 		do {
-			if (chooser.showOpenDialog(this.npd.f) != JFileChooser.APPROVE_OPTION)
+			if (chooser.showOpenDialog(this.txe.f) != JFileChooser.APPROVE_OPTION)
 				return;
 			temp = chooser.getSelectedFile();
 
 			if (temp.exists())
 				break;
 
-			JOptionPane.showMessageDialog(this.npd.f,
+			JOptionPane.showMessageDialog(this.txe.f,
 					"<html>" + temp.getName() + "<br>file not found.<br>"
 							+ "Please verify the correct file name was given.<html>",
 					"Open", JOptionPane.INFORMATION_MESSAGE);
 
 		} while (true);
 
-		this.npd.ta.setText("");
+		this.txe.ta.setText("");
 
 		if (!openFile(temp)) {
 			fileName = "Untitled";
 			saved = true;
-			this.npd.f.setTitle(fileName + " - " + applicationTitle);
+			this.txe.f.setTitle(fileName + " - " + applicationTitle);
 		}
 		if (!temp.canWrite())
 			newFileFlag = true;
@@ -181,11 +181,11 @@ public class FileOperation {
 				newFileFlag = true;
 			}
 			fileRef = temp;
-			npd.f.setTitle(fileName + " - " + applicationTitle);
-			npd.statusBar.setText("File : " + temp.getPath() + " saved/opened successfully.");
+			txe.f.setTitle(fileName + " - " + applicationTitle);
+			txe.statusBar.setText("File : " + temp.getPath() + " saved/opened successfully.");
 			newFileFlag = false;
 		} else {
-			npd.statusBar.setText("Failed to save/open : " + temp.getPath());
+			txe.statusBar.setText("Failed to save/open : " + temp.getPath());
 		}
 	}
 
@@ -194,7 +194,7 @@ public class FileOperation {
 		String strMsg = "<html>The text in the " + fileName + " file has been changed.<br>"
 				+ "Do you want to save the changes?<html>";
 		if (!saved) {
-			int x = JOptionPane.showConfirmDialog(this.npd.f, strMsg, applicationTitle,
+			int x = JOptionPane.showConfirmDialog(this.txe.f, strMsg, applicationTitle,
 					JOptionPane.YES_NO_CANCEL_OPTION);
 
 			if (x == JOptionPane.CANCEL_OPTION)
@@ -210,12 +210,12 @@ public class FileOperation {
 		if (!confirmSave())
 			return;
 
-		this.npd.ta.setText("");
+		this.txe.ta.setText("");
 		fileName = new String("Untitled");
 		fileRef = new File(fileName);
 		saved = true;
 		newFileFlag = true;
-		this.npd.f.setTitle(fileName + " - " + applicationTitle);
+		this.txe.f.setTitle(fileName + " - " + applicationTitle);
 	}
 	
 	static long getNumberOfWords(String filePath) throws FileNotFoundException {
