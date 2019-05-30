@@ -27,7 +27,7 @@ public class FindDialog extends JPanel implements ActionListener {
 	private boolean ok;
 	private JDialog dialog;
 
-///////////////////////
+
 	public FindDialog(JTextArea jta) {
 
 		this.jta = jta;
@@ -62,25 +62,12 @@ public class FindDialog extends JPanel implements ActionListener {
 		replaceAllButton = new JButton("Replace All");
 		cancelButton = new JButton("Cancel");
 
-		/*
-		 * findButtonPanel=new JPanel(); findButtonPanel.setLayout(new GridLayout(2,1));
-		 * findButtonPanel.add(findNextButton); findButtonPanel.add(cancelButton);
-		 */
 		replaceButtonPanel = new JPanel();
 		replaceButtonPanel.setLayout(new GridLayout(4, 1));
 		replaceButtonPanel.add(findNextButton);
 		replaceButtonPanel.add(replaceButton);
 		replaceButtonPanel.add(replaceAllButton);
 		replaceButtonPanel.add(cancelButton);
-		/*
-		 * card=new CardLayout();
-		 * 
-		 * buttonPanel=new JPanel(); buttonPanel.setLayout(card);
-		 * 
-		 * buttonPanel.add(replaceButtonPanel,"replace");
-		 * buttonPanel.add(findButtonPanel,"find"); card.first(buttonPanel);
-		 * 
-		 */
 
 		JPanel textPanel = new JPanel();
 		textPanel.setLayout(new GridLayout(3, 2));
@@ -88,12 +75,12 @@ public class FindDialog extends JPanel implements ActionListener {
 		textPanel.add(findWhat);
 		textPanel.add(replaceLabel = new JLabel("Replace With "));
 		textPanel.add(replaceWith);
-		textPanel.add(new JLabel(" "));// dummy Lable
-		textPanel.add(new JLabel(" "));// dummy Lable
+		textPanel.add(new JLabel(" "));
+		textPanel.add(new JLabel(" "));
 
 		setLayout(new BorderLayout());
 
-		add(new JLabel("       "), BorderLayout.NORTH);// dummy label
+		add(new JLabel("       "), BorderLayout.NORTH);
 		add(textPanel, BorderLayout.CENTER);
 		add(replaceButtonPanel, BorderLayout.EAST);
 		add(southPanel, BorderLayout.SOUTH);
@@ -123,7 +110,6 @@ public class FindDialog extends JPanel implements ActionListener {
 
 	}
 
-//////////////////////////
 	void enableDisableButtons() {
 		if (findWhat.getText().length() == 0) {
 			findNextButton.setEnabled(false);
@@ -136,7 +122,7 @@ public class FindDialog extends JPanel implements ActionListener {
 		}
 	}
 
-///////////////////////////////////
+
 	public void actionPerformed(ActionEvent ev) {
 
 		if (ev.getSource() == findNextButton)
@@ -148,7 +134,6 @@ public class FindDialog extends JPanel implements ActionListener {
 
 	}
 
-/////////////////////////
 	int findNext() {
 
 		String s1 = jta.getText();
@@ -162,10 +147,6 @@ public class FindDialog extends JPanel implements ActionListener {
 		if (up.isSelected()) {
 			if (selStart != selEnd)
 				lastIndex = selEnd - s2.length() - 1;
-			/*****
-			 * Notepad doesnt use the else part, but it should be, instead of using
-			 * caretPosition.*** else lastIndex=lastIndex-s2.length();
-			 ******/
 
 			if (!matchCase.isSelected())
 				lastIndex = s1.toUpperCase().lastIndexOf(s2.toUpperCase(), lastIndex);
@@ -183,7 +164,6 @@ public class FindDialog extends JPanel implements ActionListener {
 		return lastIndex;
 	}
 
-///////////////////////////////////////////////
 	public void findNextWithSelection() {
 		int idx = findNext();
 		if (idx != -1) {
@@ -194,18 +174,16 @@ public class FindDialog extends JPanel implements ActionListener {
 					JOptionPane.INFORMATION_MESSAGE);
 	}
 
-//////////////////////////////////////////////
+
 	void replaceNext() {
-// if nothing is selectd
+
 		if (jta.getSelectionStart() == jta.getSelectionEnd()) {
 			findNextWithSelection();
 			return;
 		}
 
 		String searchText = findWhat.getText();
-		String temp = jta.getSelectedText(); // get selected text
-
-//check if the selected text matches the search text then do replacement
+		String temp = jta.getSelectedText(); 
 
 		if ((matchCase.isSelected() && temp.equals(searchText))
 				|| (!matchCase.isSelected() && temp.equalsIgnoreCase(searchText)))
@@ -214,7 +192,6 @@ public class FindDialog extends JPanel implements ActionListener {
 		findNextWithSelection();
 	}
 
-//////////////////////////////////////////////
 	int replaceAllNext() {
 		if (up.isSelected())
 			jta.setCaretPosition(jta.getText().length() - 1);
@@ -234,7 +211,6 @@ public class FindDialog extends JPanel implements ActionListener {
 		return counter;
 	}
 
-//////////////////////////////////////////////
 	public boolean showDialog(Component parent, boolean isFind) {
 
 		Frame owner = null;
@@ -259,7 +235,6 @@ public class FindDialog extends JPanel implements ActionListener {
 		replaceLabel.setVisible(false);
 
 		if (isFind) {
-//card.show(buttonPanel,"find");
 			dialog.setSize(460, 180);
 			dialog.setTitle("Find");
 		} else {
@@ -268,15 +243,13 @@ public class FindDialog extends JPanel implements ActionListener {
 			replaceWith.setVisible(true);
 			replaceLabel.setVisible(true);
 
-//card.show(buttonPanel,"replace");
 			dialog.setSize(450, 200);
 			dialog.setTitle("Replace");
 		}
 
 		dialog.setVisible(true);
 
-//System.out.println(dialog.getWidth()+" "+dialog.getHeight());
 		return ok;
 	}
-//////////////////////////////
+
 }

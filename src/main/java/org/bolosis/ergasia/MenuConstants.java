@@ -24,8 +24,7 @@ public interface MenuConstants {
 	final String editGoTo="Go To...";  
 	final String editSelectAll="Select All";  
 	final String editTimeDate="Time/Date";  
-	  
-	final String formatWordWrap="Word Wrap";  
+	    
 	final String formatFont="Font...";  
 	final String formatForeground="Set Text color...";  
 	final String formatBackground="Set Pad color...";  
@@ -34,5 +33,8 @@ public interface MenuConstants {
 	    
 	final String aboutStatistics="About Statistics";  
 	  
-	final String invastigationText="Your Javapad";
+	 String invastigationText="Number of words :  \n"
+	 		+ "Number of characters:  \n"
+	 		+ "Number of paragraphs:  \n"
+	 		+ "Size of file:  \n";
 }

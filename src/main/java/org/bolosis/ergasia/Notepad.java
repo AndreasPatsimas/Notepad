@@ -36,7 +36,7 @@ public class Notepad implements ActionListener, MenuConstants {
 	JLabel statusBar;
 
 	private String fileName = "Untitled";
-	private boolean saved = true;
+	
 	String applicationName = "Tasos";
 
 	String searchString, replaceString;
@@ -200,10 +200,6 @@ public class Notepad implements ActionListener, MenuConstants {
 		else if (cmdText.equals(editTimeDate))
 			ta.insert(new Date().toString(), ta.getSelectionStart());
 		
-		else if (cmdText.equals(formatWordWrap)) {
-			JCheckBoxMenuItem temp = (JCheckBoxMenuItem) ev.getSource();
-			ta.setLineWrap(temp.isSelected());
-		}
 		
 		else if (cmdText.equals(formatFont)) {
 			if (fontDialog == null)
@@ -302,7 +298,6 @@ public class Notepad implements ActionListener, MenuConstants {
 	
 	void createMenuBar(JFrame f) {
 		JMenuBar mb = new JMenuBar();
-		//JMenuItem temp;
 
 		JMenu fileMenu = createMenu(fileText, KeyEvent.VK_F, mb);
 		JMenu editMenu = createMenu(editText, KeyEvent.VK_E, mb);
@@ -336,7 +331,6 @@ public class Notepad implements ActionListener, MenuConstants {
 		createMenuItem(editTimeDate, KeyEvent.VK_D, editMenu, this)
 				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
 
-		createCheckBoxMenuItem(formatWordWrap, KeyEvent.VK_W, formatMenu, this);
 
 		createMenuItem(formatFont, KeyEvent.VK_F, formatMenu, this);
 		formatMenu.addSeparator();
