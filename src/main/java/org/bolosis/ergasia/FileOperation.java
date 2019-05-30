@@ -12,7 +12,7 @@ public class FileOperation {
 	boolean saved;
 	boolean newFileFlag;
 	String fileName;
-	String applicationTitle = "Notepad - Tasos Bolosis";
+	String applicationTitle = "Text Editor - Tasos Bolosis";
 
 	File fileRef;
 	JFileChooser chooser;

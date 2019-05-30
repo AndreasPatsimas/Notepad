@@ -227,7 +227,7 @@ public class Notepad implements ActionListener, MenuConstants {
 		
 		else if (cmdText.equals(aboutStatistics)) {
 			String fileName = f.getTitle();
-			String title = " - Notepad - Tasos Bolosis";
+			String title = " - Text Editor - Tasos Bolosis";
 			fileName = fileName.replace(title, " ").replaceAll("\\s+", " ");
 			
 			try {
