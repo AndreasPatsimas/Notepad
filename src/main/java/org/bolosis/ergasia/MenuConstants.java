@@ -8,22 +8,22 @@ public interface MenuConstants {
 	final String viewText="View";  
 	final String statistics="Statistics";  
 	  
-	final String fileNew="New";  
-	final String fileOpen="Open...";  
-	final String fileSave="Save";  
-	final String fileSaveAs="Save As...";    
-	final String fileExit="Exit";  
+	final String New="New";  
+	final String Open="Open...";  
+	final String Save="Save";  
+	final String SaveAs="Save As...";    
+	final String Exit="Exit";  
 	    
-	final String editCut="Cut";  
-	final String editCopy="Copy";  
-	final String editPaste="Paste";  
-	final String editClear="Clear";  
-	final String editFind="Find...";  
-	final String editFindNext="Find Next";  
-	final String editReplace="Replace";  
-	final String editGoTo="Go To...";  
-	final String editSelectAll="Select All";  
-	final String editTimeDate="Time/Date";  
+	final String cut="Cut";  
+	final String copy="Copy";  
+	final String paste="Paste";  
+	final String clear="Clear";  
+	final String find="Find...";  
+	final String findNext="Find Next";  
+	final String replace="Replace";  
+	final String goTo="Go To...";  
+	final String selectAll="Select All";  
+	final String timeDate="Time/Date";  
 	    
 	final String formatFont="Font...";  
 	final String formatForeground="Set Text color...";  

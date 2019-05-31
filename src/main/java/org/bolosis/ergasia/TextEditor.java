@@ -35,8 +35,8 @@ import org.apache.commons.lang3.StringUtils;
 
 public class TextEditor implements ActionListener, MenuConstants {
 
-	JFrame f;
-	JTextArea ta;
+	JFrame frame;
+	JTextArea textArea;
 	JLabel statusBar;
 
 	private String fileName = "Untitled";
@@ -57,35 +57,35 @@ public class TextEditor implements ActionListener, MenuConstants {
 
 	
 	TextEditor() {
-		f = new JFrame(fileName + " - " + applicationName);
-		ta = new JTextArea(30, 60);
+		frame = new JFrame(fileName + " - " + applicationName);
+		textArea = new JTextArea(30, 60);
 		statusBar = new JLabel("||       Ln 1, Col 1  ", JLabel.RIGHT);
-		f.add(new JScrollPane(ta), BorderLayout.CENTER);
-		f.add(statusBar, BorderLayout.SOUTH);
-		f.add(new JLabel("  "), BorderLayout.EAST);
-		f.add(new JLabel("  "), BorderLayout.WEST);
-		createMenuBar(f);
+		frame.add(new JScrollPane(textArea), BorderLayout.CENTER);
+		frame.add(statusBar, BorderLayout.SOUTH);
+		frame.add(new JLabel("  "), BorderLayout.EAST);
+		frame.add(new JLabel("  "), BorderLayout.WEST);
+		createMenuBar(frame);
 		
-		f.pack();
-		f.setLocation(100, 50);
-		f.setVisible(true);
-		f.setLocation(150, 50);
-		f.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frame.pack();
+		frame.setLocation(100, 50);
+		frame.setVisible(true);
+		frame.setLocation(150, 50);
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		fileHandler = new FileOperation(this);
 
 
-		ta.addCaretListener(new CaretListener() {
+		textArea.addCaretListener(new CaretListener() {
 			public void caretUpdate(CaretEvent e) {
 				int lineNumber = 0, column = 0, pos = 0;
 
 				try {
-					pos = ta.getCaretPosition();
-					lineNumber = ta.getLineOfOffset(pos);
-					column = pos - ta.getLineStartOffset(lineNumber);
+					pos = textArea.getCaretPosition();
+					lineNumber = textArea.getLineOfOffset(pos);
+					column = pos - textArea.getLineStartOffset(lineNumber);
 				} catch (Exception excp) {
 				}
-				if (ta.getText().length() == 0) {
+				if (textArea.getText().length() == 0) {
 					lineNumber = 0;
 					column = 0;
 				}
@@ -106,7 +106,7 @@ public class TextEditor implements ActionListener, MenuConstants {
 				fileHandler.saved = false;
 			}
 		};
-		ta.getDocument().addDocumentListener(myListener);
+		textArea.getDocument().addDocumentListener(myListener);
 		
 		WindowListener frameClose = new WindowAdapter() {
 			public void windowClosing(WindowEvent we) {
@@ -114,7 +114,7 @@ public class TextEditor implements ActionListener, MenuConstants {
 					System.exit(0);
 			}
 		};
-		f.addWindowListener(frameClose);
+		frame.addWindowListener(frameClose);
 		
 	}
 
@@ -122,13 +122,13 @@ public class TextEditor implements ActionListener, MenuConstants {
 	void goTo() {
 		int lineNumber = 0;
 		try {
-			lineNumber = ta.getLineOfOffset(ta.getCaretPosition()) + 1;
-			String tempStr = JOptionPane.showInputDialog(f, "Enter Line Number:", "" + lineNumber);
+			lineNumber = textArea.getLineOfOffset(textArea.getCaretPosition()) + 1;
+			String tempStr = JOptionPane.showInputDialog(frame, "Enter Line Number:", "" + lineNumber);
 			if (tempStr == null) {
 				return;
 			}
 			lineNumber = Integer.parseInt(tempStr);
-			ta.setCaretPosition(ta.getLineStartOffset(lineNumber - 1));
+			textArea.setCaretPosition(textArea.getLineStartOffset(lineNumber - 1));
 		} catch (Exception e) {
 		}
 	}
@@ -137,44 +137,44 @@ public class TextEditor implements ActionListener, MenuConstants {
 	public void actionPerformed(ActionEvent ev) {
 		String cmdText = ev.getActionCommand();
 		
-		if (cmdText.equals(fileNew))
+		if (cmdText.equals(New))
 			fileHandler.newFile();
-		else if (cmdText.equals(fileOpen))
+		else if (cmdText.equals(Open))
 			fileHandler.openFile();
 		
-		else if (cmdText.equals(fileSave))
+		else if (cmdText.equals(Save))
 			fileHandler.saveThisFile();
 		
-		else if (cmdText.equals(fileSaveAs))
+		else if (cmdText.equals(SaveAs))
 			fileHandler.saveAsFile();
 		
-		else if (cmdText.equals(fileExit)) {
+		else if (cmdText.equals(Exit)) {
 			if (fileHandler.confirmSave())
 				System.exit(0);
 		}
 		
-		else if (cmdText.equals(editCut))
-			ta.cut();
+		else if (cmdText.equals(cut))
+			textArea.cut();
 		
-		else if (cmdText.equals(editCopy))
-			ta.copy();
+		else if (cmdText.equals(copy))
+			textArea.copy();
 		
-		else if (cmdText.equals(editPaste))
-			ta.paste();
+		else if (cmdText.equals(paste))
+			textArea.paste();
 		
-		else if (cmdText.equals(editClear))
-			ta.replaceSelection("");
+		else if (cmdText.equals(clear))
+			textArea.replaceSelection("");
 		
-		else if (cmdText.equals(editFind)) {
-			if (TextEditor.this.ta.getText().length() == 0)
+		else if (cmdText.equals(find)) {
+			if (TextEditor.this.textArea.getText().length() == 0)
 				return; // text box have no text
 			if (findReplaceDialog == null)
-				findReplaceDialog = new FindDialog(TextEditor.this.ta);
-			findReplaceDialog.showDialog(TextEditor.this.f, true);
+				findReplaceDialog = new FindDialog(TextEditor.this.textArea);
+			findReplaceDialog.showDialog(TextEditor.this.frame, true);
 		}
 		
-		else if (cmdText.equals(editFindNext)) {
-			if (TextEditor.this.ta.getText().length() == 0)
+		else if (cmdText.equals(findNext)) {
+			if (TextEditor.this.textArea.getText().length() == 0)
 				return; // text box have no text
 
 			if (findReplaceDialog == null)
@@ -183,34 +183,34 @@ public class TextEditor implements ActionListener, MenuConstants {
 				findReplaceDialog.findNextWithSelection();
 		}
 		
-		else if (cmdText.equals(editReplace)) {
-			if (TextEditor.this.ta.getText().length() == 0)
+		else if (cmdText.equals(replace)) {
+			if (TextEditor.this.textArea.getText().length() == 0)
 				return; // text box have no text
 
 			if (findReplaceDialog == null)
-				findReplaceDialog = new FindDialog(TextEditor.this.ta);
-			findReplaceDialog.showDialog(TextEditor.this.f, false);// replace
+				findReplaceDialog = new FindDialog(TextEditor.this.textArea);
+			findReplaceDialog.showDialog(TextEditor.this.frame, false);// replace
 		}
 		
-		else if (cmdText.equals(editGoTo)) {
-			if (TextEditor.this.ta.getText().length() == 0)
+		else if (cmdText.equals(goTo)) {
+			if (TextEditor.this.textArea.getText().length() == 0)
 				return; // text box have no text
 			goTo();
 		}
 		
-		else if (cmdText.equals(editSelectAll))
-			ta.selectAll();
+		else if (cmdText.equals(selectAll))
+			textArea.selectAll();
 		
-		else if (cmdText.equals(editTimeDate))
-			ta.insert(new Date().toString(), ta.getSelectionStart());
+		else if (cmdText.equals(timeDate))
+			textArea.insert(new Date().toString(), textArea.getSelectionStart());
 		
 		
 		else if (cmdText.equals(formatFont)) {
 			if (fontDialog == null)
-				fontDialog = new FontChooser(ta.getFont());
+				fontDialog = new FontChooser(textArea.getFont());
 
-			if (fontDialog.showDialog(TextEditor.this.f, "Choose a font"))
-				TextEditor.this.ta.setFont(fontDialog.createFont());
+			if (fontDialog.showDialog(TextEditor.this.frame, "Choose a font"))
+				TextEditor.this.textArea.setFont(fontDialog.createFont());
 		}
 		
 		else if (cmdText.equals(formatForeground))
@@ -226,7 +226,7 @@ public class TextEditor implements ActionListener, MenuConstants {
 		}
 		
 		else if (cmdText.equals(aboutStatistics)) {
-			String fileName = f.getTitle();
+			String fileName = frame.getTitle();
 			String title = " - Text Editor - Tasos Bolosis";
 			fileName = fileName.replace(title, " ").replaceAll("\\s+", " ");
 			
@@ -259,7 +259,7 @@ public class TextEditor implements ActionListener, MenuConstants {
 				
 				long words = (long) FileOperation.getNumberOfWords(fileName);
 				
-				JOptionPane.showMessageDialog(TextEditor.this.f, FileOperation.invastigationText(words, charactersWithGaps, 
+				JOptionPane.showMessageDialog(TextEditor.this.frame, FileOperation.invastigationText(words, charactersWithGaps, 
 						charactersWithoutGaps, lines, bytes), "Results...", JOptionPane.INFORMATION_MESSAGE);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -274,10 +274,10 @@ public class TextEditor implements ActionListener, MenuConstants {
 		if (bcolorChooser == null)
 			bcolorChooser = new JColorChooser();
 		if (backgroundDialog == null)
-			backgroundDialog = JColorChooser.createDialog(TextEditor.this.f, formatBackground, false, bcolorChooser,
+			backgroundDialog = JColorChooser.createDialog(TextEditor.this.frame, formatBackground, false, bcolorChooser,
 					new ActionListener() {
 						public void actionPerformed(ActionEvent evvv) {
-							TextEditor.this.ta.setBackground(bcolorChooser.getColor());
+							TextEditor.this.textArea.setBackground(bcolorChooser.getColor());
 						}
 					}, null);
 
@@ -289,10 +289,10 @@ public class TextEditor implements ActionListener, MenuConstants {
 		if (fcolorChooser == null)
 			fcolorChooser = new JColorChooser();
 		if (foregroundDialog == null)
-			foregroundDialog = JColorChooser.createDialog(TextEditor.this.f, formatForeground, false, fcolorChooser,
+			foregroundDialog = JColorChooser.createDialog(TextEditor.this.frame, formatForeground, false, fcolorChooser,
 					new ActionListener() {
 						public void actionPerformed(ActionEvent evvv) {
-							TextEditor.this.ta.setForeground(fcolorChooser.getColor());
+							TextEditor.this.textArea.setForeground(fcolorChooser.getColor());
 						}
 					}, null);
 
@@ -338,7 +338,7 @@ public class TextEditor implements ActionListener, MenuConstants {
 	}
 
 	
-	void createMenuBar(JFrame f) {
+	void createMenuBar(JFrame frame) {
 		JMenuBar mb = new JMenuBar();
 
 		JMenu fileMenu = createMenu(fileText, KeyEvent.VK_F, mb);
@@ -347,30 +347,30 @@ public class TextEditor implements ActionListener, MenuConstants {
 		JMenu formatMenu = createMenu(formatText, KeyEvent.VK_O, mb);
 		JMenu viewMenu = createMenu(viewText, KeyEvent.VK_V, mb);		
 
-		createMenuItem(fileNew, KeyEvent.VK_N, fileMenu, KeyEvent.VK_N, this);
-		createMenuItem(fileOpen, KeyEvent.VK_O, fileMenu, KeyEvent.VK_O, this);
-		createMenuItem(fileSave, KeyEvent.VK_S, fileMenu, KeyEvent.VK_S, this);
-		createMenuItem(fileSaveAs, KeyEvent.VK_A, fileMenu, this);
+		createMenuItem(New, KeyEvent.VK_N, fileMenu, KeyEvent.VK_N, this);
+		createMenuItem(Open, KeyEvent.VK_O, fileMenu, KeyEvent.VK_O, this);
+		createMenuItem(Save, KeyEvent.VK_S, fileMenu, KeyEvent.VK_S, this);
+		createMenuItem(SaveAs, KeyEvent.VK_A, fileMenu, this);
 		
 		fileMenu.addSeparator();
-		createMenuItem(fileExit, KeyEvent.VK_X, fileMenu, this);
+		createMenuItem(Exit, KeyEvent.VK_X, fileMenu, this);
 
 		
 		editMenu.addSeparator();
-		cutItem = createMenuItem(editCut, KeyEvent.VK_T, editMenu, KeyEvent.VK_X, this);
-		copyItem = createMenuItem(editCopy, KeyEvent.VK_C, editMenu, KeyEvent.VK_C, this);
-		createMenuItem(editPaste, KeyEvent.VK_P, editMenu, KeyEvent.VK_V, this);
-		clearItem = createMenuItem(editClear, KeyEvent.VK_L, editMenu, this);
+		cutItem = createMenuItem(cut, KeyEvent.VK_T, editMenu, KeyEvent.VK_X, this);
+		copyItem = createMenuItem(copy, KeyEvent.VK_C, editMenu, KeyEvent.VK_C, this);
+		createMenuItem(paste, KeyEvent.VK_P, editMenu, KeyEvent.VK_V, this);
+		clearItem = createMenuItem(clear, KeyEvent.VK_L, editMenu, this);
 		clearItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_CLEAR, 0));
 		editMenu.addSeparator();
-		findItem = createMenuItem(editFind, KeyEvent.VK_F, editMenu, KeyEvent.VK_F, this);
-		findNextItem = createMenuItem(editFindNext, KeyEvent.VK_N, editMenu, this);
+		findItem = createMenuItem(find, KeyEvent.VK_F, editMenu, KeyEvent.VK_F, this);
+		findNextItem = createMenuItem(findNext, KeyEvent.VK_N, editMenu, this);
 		findNextItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
-		replaceItem = createMenuItem(editReplace, KeyEvent.VK_R, editMenu, KeyEvent.VK_H, this);
-		gotoItem = createMenuItem(editGoTo, KeyEvent.VK_G, editMenu, KeyEvent.VK_G, this);
+		replaceItem = createMenuItem(replace, KeyEvent.VK_R, editMenu, KeyEvent.VK_H, this);
+		gotoItem = createMenuItem(goTo, KeyEvent.VK_G, editMenu, KeyEvent.VK_G, this);
 		editMenu.addSeparator();
-		selectAllItem = createMenuItem(editSelectAll, KeyEvent.VK_A, editMenu, KeyEvent.VK_A, this);
-		createMenuItem(editTimeDate, KeyEvent.VK_D, editMenu, this)
+		selectAllItem = createMenuItem(selectAll, KeyEvent.VK_A, editMenu, KeyEvent.VK_A, this);
+		createMenuItem(timeDate, KeyEvent.VK_D, editMenu, this)
 				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
 
 
@@ -381,13 +381,13 @@ public class TextEditor implements ActionListener, MenuConstants {
 
 		createCheckBoxMenuItem(viewStatusBar, KeyEvent.VK_S, viewMenu, this).setSelected(true);
 		
-		LookAndFeelMenu.createLookAndFeelMenuItem(viewMenu, this.f);
+		LookAndFeelMenu.createLookAndFeelMenuItem(viewMenu, this.frame);
 
 		createMenuItem(aboutStatistics, KeyEvent.VK_A, statisticsMenu, this);
 
 		MenuListener editMenuListener = new MenuListener() {
 			public void menuSelected(MenuEvent evvvv) {
-				if (TextEditor.this.ta.getText().length() == 0) {
+				if (TextEditor.this.textArea.getText().length() == 0) {
 					findItem.setEnabled(false);
 					findNextItem.setEnabled(false);
 					replaceItem.setEnabled(false);
@@ -400,7 +400,7 @@ public class TextEditor implements ActionListener, MenuConstants {
 					selectAllItem.setEnabled(true);
 					gotoItem.setEnabled(true);
 				}
-				if (TextEditor.this.ta.getSelectionStart() == ta.getSelectionEnd()) {
+				if (TextEditor.this.textArea.getSelectionStart() == textArea.getSelectionEnd()) {
 					cutItem.setEnabled(false);
 					copyItem.setEnabled(false);
 					clearItem.setEnabled(false);
@@ -422,6 +422,6 @@ public class TextEditor implements ActionListener, MenuConstants {
 
 		};
 		editMenu.addMenuListener(editMenuListener);
-		f.setJMenuBar(mb);
+		frame.setJMenuBar(mb);
 	}
 }
