@@ -8,6 +8,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -22,6 +23,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -29,7 +31,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-
 import org.apache.commons.lang3.StringUtils;
 
 
@@ -38,6 +39,8 @@ public class TextEditor implements ActionListener, MenuConstants {
 	JFrame frame;
 	JTextArea textArea;
 	JLabel statusBar;
+	JTextField field = new JTextField(10);
+	
 
 	private String fileName = "Untitled";
 	
@@ -57,22 +60,51 @@ public class TextEditor implements ActionListener, MenuConstants {
 
 	
 	TextEditor() {
-		frame = new JFrame(fileName + " - " + applicationName);
+		
+		frame = new JFrame(fileName + " - " + applicationName);		
+	
+		frame.add(field, BorderLayout.NORTH);
+		
 		textArea = new JTextArea(30, 60);
+		
 		statusBar = new JLabel("||       Ln 1, Col 1  ", JLabel.RIGHT);
+		
 		frame.add(new JScrollPane(textArea), BorderLayout.CENTER);
+		
 		frame.add(statusBar, BorderLayout.SOUTH);
+		
 		frame.add(new JLabel("  "), BorderLayout.EAST);
+		
 		frame.add(new JLabel("  "), BorderLayout.WEST);
+		
 		createMenuBar(frame);
 		
 		frame.pack();
+		
 		frame.setLocation(100, 50);
+		
 		frame.setVisible(true);
+		
 		frame.setLocation(150, 50);
+		
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		fileHandler = new FileOperation(this);
+		
+		frame.addWindowListener(new WindowAdapter() {
+			 
+	          public void windowClosing(WindowEvent we) {
+	        	  if (fileHandler.confirmSave()) {
+	            int result = JOptionPane.showConfirmDialog(frame,
+	                "Do you want to Exit ?", "Exit Confirmation : ",
+	                JOptionPane.YES_NO_OPTION);
+	            if (result == JOptionPane.YES_OPTION)
+	              frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	            else if (result == JOptionPane.NO_OPTION)
+	              frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+	            }
+	          }
+	        });
 
 
 		textArea.addCaretListener(new CaretListener() {
@@ -110,11 +142,13 @@ public class TextEditor implements ActionListener, MenuConstants {
 		
 		WindowListener frameClose = new WindowAdapter() {
 			public void windowClosing(WindowEvent we) {
-				if (fileHandler.confirmSave())
-					System.exit(0);
+				if (fileHandler.confirmSave()) {
+					if(fileHandler.confirmExit()) {
+						System.exit(0);
+					}
+				}
 			}
 		};
-		frame.addWindowListener(frameClose);
 		
 	}
 
@@ -139,8 +173,13 @@ public class TextEditor implements ActionListener, MenuConstants {
 		
 		if (cmdText.equals(New))
 			fileHandler.newFile();
-		else if (cmdText.equals(Open))
-			fileHandler.openFile();
+		else if (cmdText.equals(Open)) {
+			File file = fileHandler.openFile();
+			try {
+				field.setText(file.getCanonicalPath());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}}
 		
 		else if (cmdText.equals(Save))
 			fileHandler.saveThisFile();
@@ -149,8 +188,12 @@ public class TextEditor implements ActionListener, MenuConstants {
 			fileHandler.saveAsFile();
 		
 		else if (cmdText.equals(Exit)) {
-			if (fileHandler.confirmSave())
-				System.exit(0);
+			if (fileHandler.confirmSave()) {
+				if(fileHandler.confirmExit()) {
+					frame.dispose();
+				}
+			}
+				
 		}
 		
 		else if (cmdText.equals(cut))
@@ -237,6 +280,8 @@ public class TextEditor implements ActionListener, MenuConstants {
 				Scanner sc = new Scanner(file);
 				Scanner cs = new Scanner(file);
 				
+				System.out.println(file.getCanonicalPath());
+				
 				long lines = 0l;
 				
 				long charactersWithGaps = 0l;
@@ -301,8 +346,11 @@ public class TextEditor implements ActionListener, MenuConstants {
 
 	
 	JMenuItem createMenuItem(String s, int key, JMenu toMenu, ActionListener al) {
+		
 		JMenuItem temp = new JMenuItem(s, key);
+		
 		temp.addActionListener(al);
+		
 		toMenu.add(temp);
 
 		return temp;
@@ -320,10 +368,15 @@ public class TextEditor implements ActionListener, MenuConstants {
 
 	
 	JCheckBoxMenuItem createCheckBoxMenuItem(String s, int key, JMenu toMenu, ActionListener al) {
+		
 		JCheckBoxMenuItem temp = new JCheckBoxMenuItem(s);
+		
 		temp.setMnemonic(key);
+		
 		temp.addActionListener(al);
+		
 		temp.setSelected(false);
+		
 		toMenu.add(temp);
 
 		return temp;
@@ -331,9 +384,13 @@ public class TextEditor implements ActionListener, MenuConstants {
 
 	
 	JMenu createMenu(String s, int key, JMenuBar toMenuBar) {
+		
 		JMenu temp = new JMenu(s);
+		
 		temp.setMnemonic(key);
+		
 		toMenuBar.add(temp);
+		
 		return temp;
 	}
 
@@ -357,18 +414,31 @@ public class TextEditor implements ActionListener, MenuConstants {
 
 		
 		editMenu.addSeparator();
+		
 		cutItem = createMenuItem(cut, KeyEvent.VK_T, editMenu, KeyEvent.VK_X, this);
+		
 		copyItem = createMenuItem(copy, KeyEvent.VK_C, editMenu, KeyEvent.VK_C, this);
+		
 		createMenuItem(paste, KeyEvent.VK_P, editMenu, KeyEvent.VK_V, this);
+		
 		clearItem = createMenuItem(clear, KeyEvent.VK_L, editMenu, this);
+		
 		clearItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_CLEAR, 0));
+		
 		editMenu.addSeparator();
+		
 		findItem = createMenuItem(find, KeyEvent.VK_F, editMenu, KeyEvent.VK_F, this);
+		
 		findNextItem = createMenuItem(findNext, KeyEvent.VK_N, editMenu, this);
+		
 		findNextItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
+		
 		replaceItem = createMenuItem(replace, KeyEvent.VK_R, editMenu, KeyEvent.VK_H, this);
+		
 		gotoItem = createMenuItem(goTo, KeyEvent.VK_G, editMenu, KeyEvent.VK_G, this);
+		
 		editMenu.addSeparator();
+		
 		selectAllItem = createMenuItem(selectAll, KeyEvent.VK_A, editMenu, KeyEvent.VK_A, this);
 		createMenuItem(timeDate, KeyEvent.VK_D, editMenu, this)
 				.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));

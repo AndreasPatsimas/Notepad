@@ -135,9 +135,9 @@ public class FileOperation {
 	}
 
  
-	void openFile() {
+	File openFile() {
 		if (!confirmSave())
-			return;
+			return null;
 		chooser.setDialogTitle("Open File...");
 		chooser.setApproveButtonText("Open this");
 		chooser.setApproveButtonMnemonic(KeyEvent.VK_O);
@@ -146,7 +146,7 @@ public class FileOperation {
 		File temp = null;
 		do {
 			if (chooser.showOpenDialog(this.txe.frame) != JFileChooser.APPROVE_OPTION)
-				return;
+				return null;
 			temp = chooser.getSelectedFile();
 
 			if (temp.exists())
@@ -168,7 +168,7 @@ public class FileOperation {
 		}
 		if (!temp.canWrite())
 			newFileFlag = true;
-
+		return temp;
 	}
 
  
@@ -203,6 +203,19 @@ public class FileOperation {
 				return false;
 		}
 		return true;
+	}
+	
+	boolean confirmExit() {
+		String strMsg = "<html>Do you want to Exit ?<html>";
+		
+			int x = JOptionPane.showConfirmDialog(this.txe.frame, strMsg, "Exit Confirmation : ",
+					JOptionPane.YES_NO_OPTION);
+
+			if (x == JOptionPane.YES_OPTION)
+				return true;
+			else {
+				return false;
+				}
 	}
 
   
