@@ -264,44 +264,46 @@ public class TextEditor implements ActionListener, MenuConstants {
 		}
 
 		else if (cmdText.equals(aboutStatistics)) {
-			String fileName = frame.getTitle();
-			String title = " - Text Editor - Tasos Bolosis";
-			fileName = fileName.replace(title, " ").replaceAll("\\s+", " ");
-
-			try {
-
-				File file = new File(fileName);
-
-				Scanner sc = new Scanner(file);
-				Scanner cs = new Scanner(file);
-
-				long lines = 0l;
-
-				long charactersWithGaps = 0l;
-
-				long charactersWithoutGaps = 0l;
-
-				while (sc.hasNextLine()) {
-					lines = lines + 1;
-
-					charactersWithGaps = charactersWithGaps + sc.nextLine().length();
-
+			if (fileHandler.confirmSave()) {
+				String fileName = frame.getTitle();
+				String title = " - Text Editor - Tasos Bolosis";
+				fileName = fileName.replace(title, " ").replaceAll("\\s+", " ");
+	
+				try {
+	
+					File file = new File(fileName);
+	
+					Scanner sc = new Scanner(file);
+					Scanner cs = new Scanner(file);
+	
+					long lines = 0l;
+	
+					long charactersWithGaps = 0l;
+	
+					long charactersWithoutGaps = 0l;
+	
+					while (sc.hasNextLine()) {
+						lines = lines + 1;
+	
+						charactersWithGaps = charactersWithGaps + sc.nextLine().length();
+	
+					}
+	
+					while (cs.hasNextLine()) {
+						charactersWithoutGaps = charactersWithoutGaps
+								+ StringUtils.deleteWhitespace(cs.nextLine()).length();
+					}
+	
+					double bytes = (double) file.length() / 1024;
+	
+					long words = (long) FileOperation.getNumberOfWords(fileName);
+	
+					JOptionPane.showMessageDialog(TextEditor.this.frame,
+							FileOperation.invastigationText(words, charactersWithGaps, charactersWithoutGaps, lines, bytes),
+							"Results...", JOptionPane.INFORMATION_MESSAGE);
+				} catch (Exception e) {
+					statusBar.setText("You must first save your file to get Statistics.");
 				}
-
-				while (cs.hasNextLine()) {
-					charactersWithoutGaps = charactersWithoutGaps
-							+ StringUtils.deleteWhitespace(cs.nextLine()).length();
-				}
-
-				double bytes = (double) file.length() / 1024;
-
-				long words = (long) FileOperation.getNumberOfWords(fileName);
-
-				JOptionPane.showMessageDialog(TextEditor.this.frame,
-						FileOperation.invastigationText(words, charactersWithGaps, charactersWithoutGaps, lines, bytes),
-						"Results...", JOptionPane.INFORMATION_MESSAGE);
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
 
 		} else
