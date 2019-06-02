@@ -435,6 +435,7 @@ public class TextEditor implements ActionListener, MenuConstants {
 			public void actionPerformed(ActionEvent e) {
 				textArea.selectAll();
 				textArea.copy();
+                                statusBar.setText("Your text copied succesfully!");
 			}			
 		});
 		
