@@ -1,6 +1,7 @@
 package org.bolosis.ergasia;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -400,6 +401,8 @@ public class TextEditor implements ActionListener, MenuConstants {
 	void createMenuBar(JFrame frame) {
 
 		JMenuBar mb = new JMenuBar();
+		
+		//mb.setLayout(new GridLayout(2,1));
 
 		JButton openButton = createButton("Open", new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -412,8 +415,6 @@ public class TextEditor implements ActionListener, MenuConstants {
 			}
 		});
 
-
-		mb.add(openButton);
 		
 		JButton clearButton = createButton("Clear",new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -421,7 +422,7 @@ public class TextEditor implements ActionListener, MenuConstants {
 			}
 		});
 
-		mb.add(clearButton);
+		
 		
 		JButton saveButton = createButton("Save", new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -429,7 +430,7 @@ public class TextEditor implements ActionListener, MenuConstants {
 			}			
 		});
 		
-		mb.add(saveButton);
+		
 		
 		JButton copyButton = createButton("Copy", new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -439,13 +440,18 @@ public class TextEditor implements ActionListener, MenuConstants {
 			}			
 		});
 		
-		mb.add(copyButton);
+		
 
 		JMenu fileMenu = createMenu(fileText, KeyEvent.VK_F, mb);
 		JMenu editMenu = createMenu(editText, KeyEvent.VK_E, mb);
 		JMenu statisticsMenu = createMenu(statistics, KeyEvent.VK_H, mb);
 		JMenu formatMenu = createMenu(formatText, KeyEvent.VK_O, mb);
 		JMenu viewMenu = createMenu(viewText, KeyEvent.VK_V, mb);
+		
+		mb.add(openButton);
+		mb.add(copyButton);
+		mb.add(clearButton);
+		mb.add(saveButton);
 
 		createMenuItem(New, KeyEvent.VK_N, fileMenu, KeyEvent.VK_N, this);
 		createMenuItem(Open, KeyEvent.VK_O, fileMenu, KeyEvent.VK_O, this);
