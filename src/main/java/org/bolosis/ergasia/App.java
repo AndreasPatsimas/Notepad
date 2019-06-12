@@ -7,7 +7,7 @@ public class App
 {
     public static void main( String[] args ) throws UnknownHostException 
     {
-    	System.out.println(Inet4Address.getLocalHost().getHostAddress());
+    	//System.out.println(Inet4Address.getLocalHost().getHostAddress());
     	new TextEditor();  
     	
     }
